@@ -1,8 +1,8 @@
-function characterDetails() {
+function CharacterDetails() {
     return  (
     <>
         This is a sample character details screen 
     </>
     )
 }
-export default characterDetails
+export default CharacterDetails
