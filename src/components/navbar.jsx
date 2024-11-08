@@ -1,14 +1,14 @@
 //import React from 'react'
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 
 function Navbar() {
     return (
         <div className='navbar'>
             <div className='navbar-logo'>DnD For All</div>
             <ul className='navbar-menu'>
-                <li><Link to='/'/>Home</li>
-                <li><Link to='/users'/>Users</li>
-                <li><Link to='/characters'/>Characters</li>
+                <li>Home</li>
+                <li>Users</li>
+                <li>Characters</li>
             </ul>
         </div>
     )

@@ -1,25 +1,14 @@
-import { Link, Routes, Route } from "react-router-dom"
-
+//import { Link, Routes, Route } from "react-router-dom"
 import './App.css'
-import CharacterDetails from "./components/characterDetails"
+import Navbar from "./components/navbar"
 
 function App() {
 
   return (
     <>
       <div>
-        Home Test Page
+        <Navbar/>
       </div>
-
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/characterDetails">Character Details</Link>
-      </nav>
-
-      <Routes>
-        <Route path="/characterDetails" element={<CharacterDetails/>} />
-      </Routes>
-   
     </>
   )
 }
