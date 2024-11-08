@@ -1,7 +1,7 @@
 import { Link, Routes, Route } from "react-router-dom"
 
 import './App.css'
-import CharacterDetails from "./pages/characterDetails"
+import CharacterDetails from "./components/characterDetails"
 
 function App() {
 
@@ -13,7 +13,6 @@ function App() {
 
       <nav>
         <Link to="/">Home</Link>
-        <br/>
         <Link to="/characterDetails">Character Details</Link>
       </nav>
 
