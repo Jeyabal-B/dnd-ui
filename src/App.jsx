@@ -8,18 +8,17 @@ import Character from './components/Character/Character.jsx';
 function App() {
 
   return (
-    <>
+    <div className="App">
       <Router>
       <Navbar/>
-      <Hero/>
         <Routes>
-          <Route path='/' element={Home} />
-          <Route path='/hero' element={Home} />
+          <Route path='/' element={<Hero />} />
+          <Route path='/hero' element={<Hero />} />
           <Route path="/character" element={<Character />}/>
         </Routes>
         <Footer/>
       </Router>
-    </>
+    </div>
   )
 }
 

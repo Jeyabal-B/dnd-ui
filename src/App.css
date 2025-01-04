@@ -1,0 +1,14 @@
+/* App.css */
+body {
+    background: url('./assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Ensure consistent styling across browsers */
+}
+
+.App {
+    text-align: center;
+}

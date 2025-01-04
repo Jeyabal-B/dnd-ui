@@ -1,5 +1,9 @@
 .character{
     align-items: center;
     justify-content: space-between;
-    text-decoration-color: aliceblue;
+    color: white;
+    width: 100%;
+    min-height: 100vh;
+    z-index: -1;
+    display: flex;
 }
