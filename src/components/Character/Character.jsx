@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Character.css'
 
 const Character = () => {
 
+  const [characters, setCharacters] = useState([]);
+
   const allCharacters = async () => {
 
-    const URL = '/api/users/getAll';
+    const URL = '/characters/getAll';
     const response = await fetch(URL);
     const body = await response.json();
-    console.log(body);
+    
+    console.log('Response Body: ',body);
+    setCharacters(body);
+    console.log('Response Body: after parse ',characters);
   }
 
   return (
@@ -19,6 +24,18 @@ const Character = () => {
             <button onClick={allCharacters}>
               Get All
             </button>
+            {
+              characters.length > 0 && (
+                <ul>
+                  {characters.map((character, index) => (
+                    <li key={index}>
+                      {character.Name}
+                    </li>
+                  )
+                  )}
+                </ul>
+              ) 
+            }
     </div>
   )
 
