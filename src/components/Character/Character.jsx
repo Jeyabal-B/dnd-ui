@@ -5,10 +5,10 @@ const Character = () => {
 
   const allCharacters = async () => {
 
-    const URL = 'https://catfact.ninja/fact';
+    const URL = '/api/users/getAll';
     const response = await fetch(URL);
-    const body = await response.json;
-    console.log(response);
+    const body = await response.json();
+    console.log(body);
   }
 
   return (
