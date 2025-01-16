@@ -7,7 +7,7 @@
     z-index: -1;
     display: flex;
 }
-.character{
+.character, .character-add-new{
     display: flex;
     flex-direction: column;
 }
