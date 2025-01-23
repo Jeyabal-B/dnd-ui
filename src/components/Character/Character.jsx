@@ -5,7 +5,7 @@ const Character = () => {
 
   const [currentScreen, setCurrentScreen] = useState('character-container');
   const [characters, setCharacters] = useState([]);
-  const [character, createCharacter] = useState([]);
+  const [character, setCharacter] = useState([]);
 
   const allCharacters = async () => {
 
@@ -27,7 +27,7 @@ const Character = () => {
       body: JSON.stringify(characterData)
     });
     const body = await response.json();
-    createCharacter(body);
+    setCharacter(body);
 
   }
 
