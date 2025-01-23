@@ -13,7 +13,6 @@ const Character = () => {
     const response = await fetch(URL);
     const body = await response.json();
     setCharacters(body);
-    console.log('Response Body: ', characters);
   }
 
   const createNewCharacter = async (characterData) => {
@@ -28,7 +27,7 @@ const Character = () => {
     });
     const body = await response.json();
     setCharacter(body);
-
+    console.log('Character Created: ', body);
   }
 
   const showCreateOptions = () => {
@@ -41,11 +40,26 @@ const Character = () => {
       name: event.target.elements.name.value,
       class: event.target.elements.class.value,
       gender: event.target.elements.gender.value,
-      level: event.target.elements.level.value
+      level: event.target.elements.level.value,
+      maxHitPoints: event.target.elements.maxHitPoints.value,
     }
-    console.log('Prepared RequestBody: ', characterData);
+    console.log('Prepared characterData: ', characterData);
     await createNewCharacter(characterData);
     setCurrentScreen('character-container');
+  }
+
+  const deleteCharacter = async (characterId) => {
+    console.log('Delete request received for:', characterId);
+    const URL = '/characters';
+    const response = await fetch(URL, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({charId: characterId})
+    });
+    const body = await response;
+    console.log('Character Deleted Successfully!')
   }
 
   return (
@@ -60,16 +74,23 @@ const Character = () => {
         <div className='character'>
           {characters.map((char) => (
             <div key={char._id}>
-              <div className="character-card">
-                <h2>{char.name}</h2>
-                <p>Class : {char.class}</p>
+              <div className='character-card-and-delete'>
+                <div className="character-card">
+                  <h2>{char.name}</h2>
+                  <p>Class : {char.class}</p>
+                </div>
+                <button className='character-delete' onClick={() => deleteCharacter(char.charId)} >
+                  <b>X</b>
+                </button>
               </div>
               <div className="character-stats">
+                <p>Level :{char.level}</p>
                 <p>Race :{char.race}</p>
                 <p>Gender :{char.gender}</p>
                 <p>Feats :{char.feats}</p>
                 <p>Spell Slots :{char.spellSlots}</p>
                 <p>Background :{char.backgroundInfo}</p>
+                <p>Max Hit Points :{char.maxHitPoints}</p>
               </div>
             </div>
           ))}
@@ -88,7 +109,7 @@ const Character = () => {
               Enter Character Details
 
               <label>
-                Character Name: <input name='name'/>
+                Character Name: <input name='name' />
               </label>
 
               <label>
@@ -110,6 +131,10 @@ const Character = () => {
 
               <label>
                 Level: <input name='level' />
+              </label>
+
+              <label>
+                Max Hit Points: <input name='maxHitPoints' />
               </label>
 
               <button type='submit'>Submit</button>

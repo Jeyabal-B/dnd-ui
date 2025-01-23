@@ -21,3 +21,12 @@
     color: darkgreen;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+.character-card-and-delete{
+    display: inline-flex;
+}
+.character-delete{
+    color: #ddd;
+    background-color: red;
+    margin: 9.5px auto;
+    width: 10%;
+}
