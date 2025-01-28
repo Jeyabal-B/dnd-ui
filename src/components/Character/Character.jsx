@@ -56,7 +56,7 @@ const Character = () => {
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({charId: characterId})
+      body: JSON.stringify({_id: characterId})
     });
     const body = await response;
     console.log('Character Deleted Successfully!')
@@ -79,7 +79,7 @@ const Character = () => {
                   <h2>{char.name}</h2>
                   <p>Class : {char.class}</p>
                 </div>
-                <button className='character-delete' onClick={() => deleteCharacter(char.charId)} >
+                <button className='character-delete' onClick={() => deleteCharacter(char._id)} >
                   <b>X</b>
                 </button>
               </div>
