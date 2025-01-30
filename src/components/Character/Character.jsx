@@ -6,6 +6,59 @@ const Character = () => {
   const [currentScreen, setCurrentScreen] = useState('character-container');
   const [characters, setCharacters] = useState([]);
   const [character, setCharacter] = useState([]);
+  const [selectedCharacter, setSelectedCharacter] = useState([]);
+
+  const showCreateOptions = () => {
+    setCurrentScreen('create-character');
+  }
+
+  const showUpdateOptions = (characterData) => {
+    setSelectedCharacter(characterData);
+    setCurrentScreen('update-character');
+  }
+
+  const viewUpdateCharacter = async (event) => {
+    event.preventDefault();
+    const characterData = {
+      name: event.target.elements.name.value,
+      class: event.target.elements.class.value,
+      gender: event.target.elements.gender.value,
+      level: event.target.elements.level.value,
+      maxHitPoints: event.target.elements.maxHitPoints.value,
+    }
+    console.log('Prepared characterData: ', characterData);
+    await createNewCharacter(characterData);
+    setCurrentScreen('character-container');
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const characterData = {
+      name: event.target.elements.name.value,
+      class: event.target.elements.class.value,
+      gender: event.target.elements.gender.value,
+      level: event.target.elements.level.value,
+      maxHitPoints: event.target.elements.maxHitPoints.value,
+    }
+    console.log('Prepared characterData: ', characterData);
+    await createNewCharacter(characterData);
+    setCurrentScreen('character-container');
+  }
+
+  const handleSubmitForUpdate = async (event) => {
+    event.preventDefault();
+    const updatedCharacterData = {
+      ...selectedCharacter,
+      name: event.target.elements.name.value,
+      class: event.target.elements.class.value,
+      gender: event.target.elements.gender.value,
+      level: event.target.elements.level.value,
+      maxHitPoints: event.target.elements.maxHitPoints.value,
+    }
+    console.log('Prepared characterData: ', updatedCharacterData);
+    await updateCharacter(updatedCharacterData);
+    setCurrentScreen('character-container');
+  }
 
   const allCharacters = async () => {
 
@@ -30,22 +83,18 @@ const Character = () => {
     console.log('Character Created: ', body);
   }
 
-  const showCreateOptions = () => {
-    setCurrentScreen('create-character');
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const characterData = {
-      name: event.target.elements.name.value,
-      class: event.target.elements.class.value,
-      gender: event.target.elements.gender.value,
-      level: event.target.elements.level.value,
-      maxHitPoints: event.target.elements.maxHitPoints.value,
-    }
-    console.log('Prepared characterData: ', characterData);
-    await createNewCharacter(characterData);
-    setCurrentScreen('character-container');
+  const updateCharacter = async (characterData) => {
+    console.log('Going into the Edit Screen for:', characterData._id);
+    const URL = '/characters';
+    const response = await fetch(URL, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(characterData)
+    });
+    const body = await response;
+    console.log('Character Updated Successfully!')
   }
 
   const deleteCharacter = async (characterId) => {
@@ -56,11 +105,12 @@ const Character = () => {
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({_id: characterId})
+      body: JSON.stringify({ _id: characterId })
     });
     const body = await response;
     console.log('Character Deleted Successfully!')
   }
+
 
   return (
 
@@ -79,6 +129,9 @@ const Character = () => {
                   <h2>{char.name}</h2>
                   <p>Class : {char.class}</p>
                 </div>
+                <button className='character-view-update' onClick={() => showUpdateOptions(char)} >
+                  <b>Edit</b>
+                </button>
                 <button className='character-delete' onClick={() => deleteCharacter(char._id)} >
                   <b>X</b>
                 </button>
@@ -143,6 +196,53 @@ const Character = () => {
         )}
 
       </div>
+
+      <div className='character-update-existing'>
+
+        {currentScreen === 'update-character' && selectedCharacter && (
+          <div>
+            <form onSubmit={handleSubmitForUpdate}>
+              Edit Character
+              <label>
+                Character Name: <input name='name' value={selectedCharacter.name || ""} 
+                onChange={(e) => setSelectedCharacter({...selectedCharacter, name: e.target.value})} />
+              </label>
+
+              <label>
+                Class: <select name="class" value={selectedCharacter.class} 
+                onChange={(e) => setSelectedCharacter({...selectedCharacter, class: e.target.value})} >
+                  <option value="Fighter">Fighter</option>
+                  <option value="Barbarian">Barbarian</option>
+                  <option value="Warlock">Warlock</option>
+                  <option value="Wizard">Wizard</option>
+                  <option value="Druid">Druid</option>
+                </select>
+              </label>
+
+              <label>
+                Gender: <select name="gender" value={selectedCharacter.gender}
+                onChange={(e) => setSelectedCharacter({...selectedCharacter, gender: e.target.value})} >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </label>
+
+              <label>
+                Level: <input name='level' value={selectedCharacter.level || "1"} 
+                onChange={(e) => setSelectedCharacter({...selectedCharacter, level: e.target.value})} />
+              </label>
+
+              <label>
+                Max Hit Points: <input name='maxHitPoints' value={selectedCharacter.maxHitPoints || "0"} 
+                onChange={(e) => setSelectedCharacter({...selectedCharacter, maxHitPoints: e.target.value})} />
+              </label>
+              <button type='submit'>Submit</button>
+            </form>
+          </div>
+        )}
+
+      </div>
+
     </div>
   )
 }

@@ -30,3 +30,12 @@
     margin: 9.5px auto;
     width: 10%;
 }
+.character-view-update{
+    color: #ddd;
+    background-color: rgb(39, 81, 57);
+    margin: 9.5px auto;
+    width: 20%;
+}
+.character-update-existing{
+    display: inline-flex;
+}
