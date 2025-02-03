@@ -8,8 +8,7 @@
     display: flex;
 }
 .character, .character-add-new{
-    display: flex;
-    flex-direction: column;
+    display: grid;
 }
 .character-card{
     border: 1px solid #ddd;
@@ -37,5 +36,9 @@
     width: 20%;
 }
 .character-update-existing{
-    display: inline-flex;
+    display: inline-block;
+}
+.character-form{
+    display: flex;
+    flex-direction: row;
 }

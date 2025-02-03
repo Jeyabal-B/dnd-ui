@@ -17,20 +17,6 @@ const Character = () => {
     setCurrentScreen('update-character');
   }
 
-  const viewUpdateCharacter = async (event) => {
-    event.preventDefault();
-    const characterData = {
-      name: event.target.elements.name.value,
-      class: event.target.elements.class.value,
-      gender: event.target.elements.gender.value,
-      level: event.target.elements.level.value,
-      maxHitPoints: event.target.elements.maxHitPoints.value,
-    }
-    console.log('Prepared characterData: ', characterData);
-    await createNewCharacter(characterData);
-    setCurrentScreen('character-container');
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const characterData = {
@@ -115,133 +101,125 @@ const Character = () => {
   return (
 
     <div className='character-container'>
-      <div className='character-get-all'>
-
-        <button onClick={allCharacters}>
-          Get All
-        </button>
-
-        <div className='character'>
-          {characters.map((char) => (
-            <div key={char._id}>
-              <div className='character-card-and-delete'>
-                <div className="character-card">
-                  <h2>{char.name}</h2>
-                  <p>Class : {char.class}</p>
+      {currentScreen === 'character-container' && (
+        <div>
+          <div className='character-get-all'>
+            <button onClick={allCharacters}>
+              Get All
+            </button>
+            <div className='character'>
+              {characters.map((char) => (
+                <div key={char._id}>
+                  <div className='character-card-and-delete'>
+                    <div className="character-card">
+                      <h2>{char.name}</h2>
+                      <p>Class : {char.class}</p>
+                    </div>
+                    <button className='character-view-update' onClick={() => showUpdateOptions(char)} >
+                      <b>Edit</b>
+                    </button>
+                    <button className='character-delete' onClick={() => deleteCharacter(char._id)} >
+                      <b>X</b>
+                    </button>
+                  </div>
+                  <div className="character-stats">
+                    <p>Level :{char.level}</p>
+                    <p>Race :{char.race}</p>
+                    <p>Gender :{char.gender}</p>
+                    <p>Feats :{char.feats}</p>
+                    <p>Spell Slots :{char.spellSlots}</p>
+                    <p>Background :{char.backgroundInfo}</p>
+                    <p>Max Hit Points :{char.maxHitPoints}</p>
+                  </div>
                 </div>
-                <button className='character-view-update' onClick={() => showUpdateOptions(char)} >
-                  <b>Edit</b>
-                </button>
-                <button className='character-delete' onClick={() => deleteCharacter(char._id)} >
-                  <b>X</b>
-                </button>
-              </div>
-              <div className="character-stats">
-                <p>Level :{char.level}</p>
-                <p>Race :{char.race}</p>
-                <p>Gender :{char.gender}</p>
-                <p>Feats :{char.feats}</p>
-                <p>Spell Slots :{char.spellSlots}</p>
-                <p>Background :{char.backgroundInfo}</p>
-                <p>Max Hit Points :{char.maxHitPoints}</p>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <button onClick={showCreateOptions}>
+            Create New
+          </button>
         </div>
-      </div>
+      )}
 
-      <div className='character-add-new'>
+      {currentScreen === 'create-character' && (
+        <div className='character-add-new'>
+          <h2>Enter Character Details</h2>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Character Name: <input name='name' />
+            </label>
 
-        <button onClick={showCreateOptions}>
-          Create New
-        </button>
+            <label>
+              Class: <select name="class">
+                <option value="Fighter">Fighter</option>
+                <option value="Barbarian">Barbarian</option>
+                <option value="Warlock">Warlock</option>
+                <option value="Wizard">Wizard</option>
+                <option value="Druid">Druid</option>
+              </select>
+            </label>
 
-        {currentScreen === 'create-character' && (
-          <div>
-            <form onSubmit={handleSubmit}>
-              Enter Character Details
+            <label>
+              Gender: <select name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </label>
 
-              <label>
-                Character Name: <input name='name' />
-              </label>
+            <label>
+              Level: <input name='level' />
+            </label>
 
-              <label>
-                Class: <select name="class">
-                  <option value="Fighter">Fighter</option>
-                  <option value="Barbarian">Barbarian</option>
-                  <option value="Warlock">Warlock</option>
-                  <option value="Wizard">Wizard</option>
-                  <option value="Druid">Druid</option>
-                </select>
-              </label>
+            <label>
+              Max Hit Points: <input name='maxHitPoints' />
+            </label>
 
-              <label>
-                Gender: <select name="gender">
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </label>
+            <button type='submit'>Submit</button>
+          </form>
+        </div>
+      )}
 
-              <label>
-                Level: <input name='level' />
-              </label>
+      {currentScreen === 'update-character' && selectedCharacter && (
+        <div className='character-update-existing'>
+          <form className='character-form' onSubmit={handleSubmitForUpdate}>
+            Edit Character
+            <label>
+              Character Name: <input name='name' value={selectedCharacter.name || ""}
+                onChange={(e) => setSelectedCharacter({ ...selectedCharacter, name: e.target.value })} />
+            </label>
 
-              <label>
-                Max Hit Points: <input name='maxHitPoints' />
-              </label>
+            <label>
+              Class: <select name="class" value={selectedCharacter.class}
+                onChange={(e) => setSelectedCharacter({ ...selectedCharacter, class: e.target.value })} >
+                <option value="Fighter">Fighter</option>
+                <option value="Barbarian">Barbarian</option>
+                <option value="Warlock">Warlock</option>
+                <option value="Wizard">Wizard</option>
+                <option value="Druid">Druid</option>
+              </select>
+            </label>
 
-              <button type='submit'>Submit</button>
-            </form>
-          </div>
-        )}
+            <label>
+              Gender: <select name="gender" value={selectedCharacter.gender}
+                onChange={(e) => setSelectedCharacter({ ...selectedCharacter, gender: e.target.value })} >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </label>
 
-      </div>
+            <label>
+              Level: <input name='level' value={selectedCharacter.level || "1"}
+                onChange={(e) => setSelectedCharacter({ ...selectedCharacter, level: e.target.value })} />
+            </label>
 
-      <div className='character-update-existing'>
-
-        {currentScreen === 'update-character' && selectedCharacter && (
-          <div>
-            <form onSubmit={handleSubmitForUpdate}>
-              Edit Character
-              <label>
-                Character Name: <input name='name' value={selectedCharacter.name || ""} 
-                onChange={(e) => setSelectedCharacter({...selectedCharacter, name: e.target.value})} />
-              </label>
-
-              <label>
-                Class: <select name="class" value={selectedCharacter.class} 
-                onChange={(e) => setSelectedCharacter({...selectedCharacter, class: e.target.value})} >
-                  <option value="Fighter">Fighter</option>
-                  <option value="Barbarian">Barbarian</option>
-                  <option value="Warlock">Warlock</option>
-                  <option value="Wizard">Wizard</option>
-                  <option value="Druid">Druid</option>
-                </select>
-              </label>
-
-              <label>
-                Gender: <select name="gender" value={selectedCharacter.gender}
-                onChange={(e) => setSelectedCharacter({...selectedCharacter, gender: e.target.value})} >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </label>
-
-              <label>
-                Level: <input name='level' value={selectedCharacter.level || "1"} 
-                onChange={(e) => setSelectedCharacter({...selectedCharacter, level: e.target.value})} />
-              </label>
-
-              <label>
-                Max Hit Points: <input name='maxHitPoints' value={selectedCharacter.maxHitPoints || "0"} 
-                onChange={(e) => setSelectedCharacter({...selectedCharacter, maxHitPoints: e.target.value})} />
-              </label>
-              <button type='submit'>Submit</button>
-            </form>
-          </div>
-        )}
-
-      </div>
+            <label>
+              Max Hit Points: <input name='maxHitPoints' value={selectedCharacter.maxHitPoints || "0"}
+                onChange={(e) => setSelectedCharacter({ ...selectedCharacter, maxHitPoints: e.target.value })} />
+            </label>
+            <button type='submit'>Submit</button>
+          </form>
+        </div>
+      )}
 
     </div>
   )
