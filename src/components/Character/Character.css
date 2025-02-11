@@ -7,14 +7,21 @@
     z-index: -1;
     display: flex;
 }
-.character, .character-add-new{
+.character-add-new{
+    display: flex;
+}
+.character{
     display: grid;
+    border: 2px solid lightblue;
+}
+.character-stats{
+    border: 2px solid lightblue;
 }
 .character-card{
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 8px;
     margin: 10px auto;
-    width: 200px;
+    width: 450px;
     text-align: center;
     background-color: lightblue;
     color: darkgreen;
